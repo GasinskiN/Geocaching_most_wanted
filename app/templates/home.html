@@ -4,11 +4,15 @@
     <div class="container">
       <i class="fas fa-key fa-6x"></i>
       <h1 class="display-3">Most wanted</h1>
-      <p class="lead">Don't just sit around collect them allpy</p>
+      <p class="lead">Don't just sit around collect them all</p>
       <hr>
-      <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-      <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
-  
+      {% if current_user.is_authenticated %}
+        <p class="welcome-message">Welcome</p>
+        <a class="btn btn-primary btn-lg" href="/profile" role="button">Profile</a>
+      {% else %}
+        <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
+        <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
+      {% endif %}
     </div>
 </div>
 

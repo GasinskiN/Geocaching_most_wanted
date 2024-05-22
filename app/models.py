@@ -1,6 +1,9 @@
 from . import db
+from flask_login import UserMixin
 
-class User(db.Model):
+#UserMixin pozwala na zapamiętywanie użytkowniknika w bazie na podstawie cookies sesji
+
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
