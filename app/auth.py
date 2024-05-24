@@ -12,8 +12,8 @@ def register():
 
 @auth.route('/register', methods=['POST'])
 def register_post():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.form['username']
+    password = request.form['password']
     #print(username, password)
 
     user = User.query.filter_by(username=username).first()
@@ -26,7 +26,7 @@ def register_post():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('main.login'))
 
 @auth.route('/login')
 def login():
