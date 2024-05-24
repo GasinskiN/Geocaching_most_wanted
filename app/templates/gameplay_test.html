@@ -1,0 +1,48 @@
+{% include 'partials/header.html' %}
+
+<h1>Gameplay</h1>
+    <form id="locationForm" method="POST" action={{ url_for('main.gameplay')}}>
+        <label for="bridgeName">Wpisz nazwę mostu, który chcesz zdobyć:</label>
+        <input type="text" id="bridgeName" name="bridgeName" required>
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <button type="button" onclick="getLocation()">Znajdź moją lokalizację</button>
+        <button type="submit">Prześlij</button>
+    </form>
+
+    <p id="locationOutput"></p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lon;
+                    document.getElementById('locationOutput').innerText = "Szerokość geograficzna: " + lat + ", Długość geograficzna: " + lon;
+                }, function(error) {
+                    var errorMessage;
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = "Użytkownik odmówił zgody na geolokalizację.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = "Informacja o lokalizacji jest niedostępna.";
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = "Przekroczono czas oczekiwania na lokalizację.";
+                            break;
+                        default:
+                            errorMessage = "Wystąpił nieznany błąd.";
+                            break;
+                    }
+                    document.getElementById("locationOutput").innerText = errorMessage;
+                });
+            } else {
+                document.getElementById("locationOutput").innerText = "Geolokalizacja nie jest wspierana przez tę przeglądarkę.";
+            }
+        }
+    </script>
+
+{% include 'partials/footer.html%' %}

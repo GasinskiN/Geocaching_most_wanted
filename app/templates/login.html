@@ -1,12 +1,11 @@
 {% include 'partials/header.html' %}
     <div class="container text-center rounded-lg login-container">
         <h1 class="bg-secondary rounded-3 pb-2 mb-4 mt-5 text-white">Login</h1>
-      
         <div class="row rounded-5">
             <div class="card bg-light">
                 <div class="card-body">
                     <!-- Makes POST request to /login route -->
-                    <form action="/login" method="post">
+                    <form action={{ url_for('main.login')}} method="post">
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" name="username">

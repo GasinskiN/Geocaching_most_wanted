@@ -38,5 +38,8 @@ def create_app():
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
+    
+    from .gameplay import gameplay_bp as gameplay_blueprint
+    app.register_blueprint(gameplay_blueprint)
 
     return app

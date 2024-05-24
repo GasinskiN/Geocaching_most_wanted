@@ -1,13 +1,13 @@
 {% include 'partials/header.html' %}
 <div class="container text-center rounded-lg login-container">
-  <h1 class="bg-secondary pb-2 rounded-3 mb-4 mt-5 text-white">Register</h1>
+    <h1 class="bg-secondary pb-2 rounded-3 mb-4 mt-5 text-white">Register</h1>
 
-  <div class="row">
-         <div class="card bg-light">
+    <div class="row">
+        <div class="card bg-light">
             <div class="card-body">
 
                 <!-- Makes POST request to /register route -->
-                <form action="/register" method="post">
+                <form action={{url_for('auth.register')}} method="post">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="username">

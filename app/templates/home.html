@@ -8,10 +8,10 @@
       <hr>
       {% if current_user.is_authenticated %}
         <p class="welcome-message">Welcome</p>
-        <a class="btn btn-primary btn-lg" href="/profile" role="button">Profile</a>
+        <a class="btn btn-primary btn-lg" href={{ url_for('main.profile') }} role="button">Profile</a>
       {% else %}
-        <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-        <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
+        <a class="btn btn-light btn-lg" href={{ url_for('main.register')}} role="button">Register</a>
+        <a class="btn btn-dark btn-lg" href={{ url_for(main.login)}} role="button">Login</a>
       {% endif %}
     </div>
 </div>

@@ -34,8 +34,10 @@ def leaderboard():
 
 
 @main.route('/gameplay')
+@login_required
 def gameplay():
-    return render_template('gameplay.html')
+    # tymczasowy template w ramach testu działania
+    return render_template('gameplay_test.html')
 
 # Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
 @main.route('/forum', methods = ['POST', 'GET'])
@@ -54,7 +56,7 @@ def page_not_found(e):
 
 @main.route('/commentReply',methods = ['POST', 'GET'])
 def result():
-   if request.method == 'POST':
-      response = request.form
+    if request.method == 'POST':
+        response = request.form
     #   respnse jest przekazywane do html
-      return render_template("test.html", response = response)
+    return render_template("test.html", response = response)
