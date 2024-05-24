@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from flask_login import current_user, login_required
 
 main = Blueprint('main', __name__)
@@ -37,11 +37,24 @@ def leaderboard():
 def gameplay():
     return render_template('gameplay.html')
 
-
-@main.route('/forum')
+# Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
+@main.route('/forum', methods = ['POST', 'GET'])
 def forum():
-    return render_template('forum.html')
+    comment = {'key1':'geeks', 'key2':'for'} 
+    if request.method == 'POST':
+        comment = request.form
+        return render_template('forum.html', comment = comment)
+    if request.method == "GET":
+        return render_template('forum.html', comment = comment)
+
 
 @main.errorhandler(404)
 def page_not_found(e):
     return render_template("error.html")
+
+@main.route('/commentReply',methods = ['POST', 'GET'])
+def result():
+   if request.method == 'POST':
+      response = request.form
+    #   respnse jest przekazywane do html
+      return render_template("test.html", response = response)

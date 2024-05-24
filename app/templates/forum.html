@@ -3,32 +3,17 @@
         <img src="../static/public/most_grunwaldzki.jpg" class="img-fluid" width="100%">
     </div>
     <div class="container-sm mt-5 mb-1">
+        {% for key, value in comment.items() %}
         <div class="card card-body p-4 comment">
-            <h2>To jest komentarz</h2>
-            <p class="d-inline-flex gap-1">
-                <div class="row align-items-start">
-                    <div class="col-sm-2">
-                        <a class="text-primary" data-bs-toggle="collapse" style="text-decoration: none;" href="#collapseCommentReply" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            Show replies
-                            <i class="iconoir-arrow-down text-black"></i>
-                        </a>
-                    </div>
-                    <div class="col-sm-1">
-                        <a class="text-primary" data-bs-toggle="collapse"  style="text-decoration: none;" href="#collapseCommentReply" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            Reply
-                            <i class="iconoir-reply text-black"></i>
-                        </a>
-                    </div>
-                </div>   
-            </p>     
-            <div class="collapse" id="collapseCommentReply">
-                <p class="card card-body comment-reply ms-3">
-                    To jest odpowiedź do komentarza
-                </p>
-                    <input type="text" class="container-sm comment-response pe-3 m-3 rounded-3 border" placeholder="Reply">
-            </div>
+            <h2>{{value}}</h2>
 
-            <input type="text" class="card card-body comment-response pt-2" placeholder="Comment">
         </div>
-    </div>
+        {% endfor %}
+
+        <div class="card card-body mt-1 comment">
+            <form action="/forum" method="post">
+                <input type="text" name="comment" class="card card-body comment-response pt-2" placeholder="Comment">
+                <button class="btn btn-secondary" type="submit" value="submit">Dodaj komentarz</button>
+            </form>
+        </div>
     {% include 'partials/footer.html' %}
