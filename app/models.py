@@ -148,7 +148,7 @@ user_achievement_association = db.Table(
 # Mapowanie tabel bazy danych na objekty python wyokrzystując SQLAlchemy
 
 # UserMixin pozwala na zapamiętywanie użytkowniknika w bazie na podstawie cookies sesji
-
+# Ustalilem 10000 jako maks punktów bo z tego liczę pasek skończenia jakby co
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
