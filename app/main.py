@@ -8,15 +8,24 @@ main = Blueprint('main', __name__)
 #def index():
 #    return 'Hello World'
 
+
 @main.route('/')
 def home():
     return render_template('homepage.html')
 
-@main.route('/profile')
-@login_required
-def profile():
-    return render_template('profile.html', name=current_user.username)
 
+
+@main.route('/profile')
+# @login_required
+def profile():
+    bridges = [{ "bridge_id": "most_grunwaldzki",
+    "name": "Most Grunwaldzki",
+    "description": "Bardzo fajny most mi się podoba" ,
+    "image_path": "../static/public/most_grunwaldzki.jpg"
+}]
+    profile = "../static/public/Profile_img.jpg"
+    # return render_template('profile.html', name=current_user.username, profile=profile)
+    return render_template("profile.html", profile = profile, bridges = bridges, points = 8000)
 
 @main.route('/login')
 def login():
