@@ -5,24 +5,11 @@
     <div class="container-sm mt-5 mb-1">
         {% for comment in comments %}
         <div class="card card-body p-4 comment">
-            {% for key, value in comment.items() %}
-            {% if key == "username" %}
-            <h5 class="username">{{value}}</h5>
-            {% endif %}
-
-            {% if key == "text" %}
-            <h2>{{value}}</h2>
-            {% endif %}
-
-            {% if key == "likes" %}
-            <h5>{{value}}<a class="iconoir-thumbs-up  ms-1 me-3" href="/forum/bridgeid/dislikes"></a>
-            {% endif %}
-
-            {% if key == "dislikes" %}
-                {{value}}<a class="iconoir-thumbs-down ms-1" href="/forum/bridgeid/dislikes"></a></h5>
-            {% endif %}
-
-            {% endfor %}    
+            <h5 class="username">{{comment.username}}</h5>
+            <h2>{{comment.text}}</h2>
+            <h5>{{comment.likes}}<a class="iconoir-thumbs-up  ms-1 me-3" href="/forum/bridgeid/dislikes"></a>
+                {{comment.dislikes}}<a class="iconoir-thumbs-down ms-1" href="/forum/bridgeid/dislikes"></a></h5>
+ 
         </div>
         {% endfor %}
 
