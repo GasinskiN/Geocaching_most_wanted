@@ -54,8 +54,13 @@ def forum(bridgeid):
     comments = [{'text':'Komentarz pierwszy', 'username':'Pioter32', "likes": 53, "dislikes": 7},{'text':'Fajny most', 'username':'Janusz', "likes": 14, "dislikes": 2}]
     image = "../static/public/"+ bridgeid +".jpg"
     if request.method == 'POST':
-        comments = request.form
-        return render_template('forum.html', comments = comments)
+
+        # Tutaj klucz to jest text a value to jest to co jest napisane w komentarzu, trzeba by to połączyć z 
+        # nazwą użytkownika i dodać do bazy danych
+        for key, value in request.form.items():
+            print(value)
+
+        return render_template('forum.html', comments = comments, image=image)
     if request.method == "GET":
         return render_template('forum.html', comments = comments, image=image)
 
