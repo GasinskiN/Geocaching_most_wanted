@@ -40,14 +40,14 @@ def gameplay():
     return render_template('gameplay_test.html')
 
 # Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
-@main.route('/forum', methods = ['POST', 'GET'])
+@main.route('/forum/bridgeid', methods = ['POST', 'GET'])
 def forum():
-    comment = {'key1':'geeks', 'key2':'for'} 
+    comments = [{'text':'Komentarz pierwszy', 'username':'Pioter32', "likes": 53, "dislikes": 7},{'text':'Fajny most', 'username':'Janusz', "likes": 14, "dislikes": 2}]
     if request.method == 'POST':
-        comment = request.form
-        return render_template('forum.html', comment = comment)
+        comments = request.form
+        return render_template('forum.html', comments = comments)
     if request.method == "GET":
-        return render_template('forum.html', comment = comment)
+        return render_template('forum.html', comments = comments)
 
 
 @main.errorhandler(404)
