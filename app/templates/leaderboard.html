@@ -1,8 +1,31 @@
 {% include 'partials/header.html' %}
-    <div class="card card-body text-center">
-        <h1>Leaderboard</h1>
+    <div class="container-sm text-center">
+                <h1>Leaderboard</h1>
     </div>
+    {% for user in users %}
     <div class="container-sm pt-5">
+        <div class="container text-center">
+            <div class="row">
+            <div class="col">
+                <div class="card pt-2">
+                    <h3>{{user.rank}}</h3>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card pt-2">
+                    <h3>{{user.username}}</h3>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card pt-2">
+                    <h3>{{user.points}}</h3>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+    <!-- <div class="container-sm pt-5">
         <div class="container text-center">
             <div class="row">
             <div class="col">
@@ -22,26 +45,5 @@
             </div>
             </div>
         </div>
-    </div>
-    <div class="container-sm pt-5">
-        <div class="container text-center">
-            <div class="row">
-            <div class="col">
-                <div class="card pt-2">
-                    <h3>Rank</h3>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card pt-2">
-                    <h3>Player</h3>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card pt-2">
-                    <h3>Score</h3>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
+    </div> -->
     {% include 'partials/footer.html' %}

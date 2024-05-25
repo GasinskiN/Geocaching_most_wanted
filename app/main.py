@@ -39,7 +39,8 @@ def register():
 
 @main.route('/leaderboard')
 def leaderboard():
-    return render_template('leaderboard.html')
+    users = [{"username": "janusz", "rank": 1, "points": 7000}, {"username": "marek", "rank": 2, "points": 5500} ]
+    return render_template('leaderboard.html', users = users)
 
 
 @main.route('/gameplay')
