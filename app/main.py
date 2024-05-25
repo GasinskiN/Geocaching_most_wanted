@@ -51,14 +51,14 @@ def gameplay():
 # Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
 @main.route('/forum/<bridgeid>', methods = ['POST', 'GET'])
 def forum(bridgeid):
-    comments = [{'text':'Komentarz pierwszy', 'username':'Pioter32', "likes": 53, "dislikes": 7},{'text':'Fajny most', 'username':'Janusz', "likes": 14, "dislikes": 2}]
+    comments = [{'text':'Komentarz pierwszy', 'username':'Pioter32'},{'text':'Fajny most', 'username':'Janusz'}]
     image = "../static/public/"+ bridgeid +".jpg"
     if request.method == 'POST':
 
         # Tutaj klucz to jest text a value to jest to co jest napisane w komentarzu, trzeba by to połączyć z 
-        # nazwą użytkownika i dodać do bazy danych
+        # nazwą użytkownika i dodać do bazy danych jakby co to można zobaczyć w konsoli
         for key, value in request.form.items():
-            print(value)
+            print(key, value)
 
         return render_template('forum.html', comments = comments, image=image)
     if request.method == "GET":
