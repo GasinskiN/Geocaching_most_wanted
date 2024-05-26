@@ -63,7 +63,7 @@ def leaderboard():
 @login_required
 def gameplay():
     # tymczasowy template w ramach testu działania
-    return render_template('gameplay_test.html')
+    return render_template('gameplay_page.html')
 
 # Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
 # @main.route('/forum/<bridgeid>', methods = ['POST', 'GET'])
