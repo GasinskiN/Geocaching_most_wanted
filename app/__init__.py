@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
+from flasgger import Swagger
 
 db = SQLAlchemy()
 
@@ -42,4 +42,6 @@ def create_app():
     from .gameplay import gameplay_bp as gameplay_blueprint
     app.register_blueprint(gameplay_blueprint)
 
+    swagger = Swagger(app)
+    
     return app

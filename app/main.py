@@ -1,11 +1,24 @@
 from flask import Blueprint, render_template, request
 from flask_login import current_user, login_required
 from .models import db, Comment, Bridge, User
+from flasgger import swag_from
 
 main = Blueprint('main', __name__)
 
 
 @main.route('/')
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Home page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Home Page</html>'
+                }
+            }
+        }
+    }
+})
 def home():
     return render_template('homepage.html')
 
@@ -25,6 +38,18 @@ def home():
 
 @main.route('/profile')
 @login_required
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'User profile page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Profile Page</html>'
+                }
+            }
+        }
+    }
+})
 def profile():
     # Fetch the current user from the database
     user = User.query.get(current_user.get_id())
@@ -44,16 +69,52 @@ def profile():
                            points=visited_bridges_count)
 
 @main.route('/login')
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Login page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Login Page</html>'
+                }
+            }
+        }
+    }
+})
 def login():
     return render_template('login.html')
 
 
 @main.route('/register')
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Register page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Register Page</html>'
+                }
+            }
+        }
+    }
+})
 def register():
     return render_template('register.html')
 
 
 @main.route('/leaderboard')
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Leaderboard page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Leaderboard Page</html>'
+                }
+            }
+        }
+    }
+})
 def leaderboard():
     users = [{"username": "janusz", "rank": 1, "points": 7000}, {"username": "marek", "rank": 2, "points": 5500} ]
     return render_template('leaderboard.html', users = users)
@@ -61,6 +122,18 @@ def leaderboard():
 
 @main.route('/gameplay')
 @login_required
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Gameplay page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Gameplay Page</html>'
+                }
+            }
+        }
+    }
+})
 def gameplay():
     # tymczasowy template w ramach testu działania
     return render_template('gameplay_page.html')
@@ -84,6 +157,27 @@ def gameplay():
 
 @main.route('/forum/<bridgeid>', methods=['POST', 'GET'])
 @login_required
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Forum page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Forum Page</html>'
+                }
+            }
+        }
+    },
+    'parameters': [
+        {
+            'name': 'bridgeid',
+            'in': 'path',
+            'type': 'string',
+            'required': True,
+            'description': 'ID of the bridge'
+        }
+    ]
+})
 def forum(bridgeid):
     if request.method == 'POST':
         # Get the comment text from the form
@@ -108,10 +202,34 @@ def forum(bridgeid):
 
 
 @main.errorhandler(404)
+@swag_from({
+    'responses': {
+        404: {
+            'description': 'Page not found',
+            'content': {
+                'text/html': {
+                    'example': '<html>404 Error Page</html>'
+                }
+            }
+        }
+    }
+})
 def page_not_found(e):
     return render_template("error.html")
 
 @main.route('/commentReply',methods = ['POST', 'GET'])
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Comment reply page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Comment Reply Page</html>'
+                }
+            }
+        }
+    }
+})
 def result():
     if request.method == 'POST':
         response = request.form

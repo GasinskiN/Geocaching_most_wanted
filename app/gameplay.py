@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import User, Bridge,user_bridge_association
 from datetime import datetime
+from flasgger import swag_from
 
 # innna nazwa: gameplay_bp, bo był problem że się nazwy pokrywały
 # ale dla auth i main nie ma tego problemu
@@ -52,6 +53,44 @@ def update_user_bridges(user_id: int, bridge_name: str)->None:
 
 @gameplay_bp.route('/gameplay', methods = ['POST', 'GET'])
 @login_required
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'Gameplay page',
+            'content': {
+                'text/html': {
+                    'example': '<html>Gameplay Page</html>'
+                }
+            }
+        },
+        302: {
+            'description': 'Redirect to profile page after successful gameplay post'
+        }
+    },
+    'parameters': [
+        {
+            'name': 'bridgeName',
+            'in': 'formData',
+            'type': 'string',
+            'required': True,
+            'description': 'Name of the bridge'
+        },
+        {
+            'name': 'latitude',
+            'in': 'formData',
+            'type': 'number',
+            'required': True,
+            'description': 'Latitude of the user location'
+        },
+        {
+            'name': 'longitude',
+            'in': 'formData',
+            'type': 'number',
+            'required': True,
+            'description': 'Longitude of the user location'
+        }
+    ]
+})
 def gameplay():
     if request.method == 'GET':
         return render_template('gameplay_page.html')
