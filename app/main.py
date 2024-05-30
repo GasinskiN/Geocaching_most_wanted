@@ -61,12 +61,27 @@ def profile():
     last_three_bridges = user.visited_bridges[-3:]
     
     profile_img = "../static/public/Profile_img.jpg"
+
+    achievements = [("Konto że hej", "../static/public/koty_za_ploty.png")]
+
+     
+    if visited_bridges_count > 1:
+        achievements.append(("Pierwsze koty za płoty", "../static/public/koty_za_ploty.png"))
     
+    if visited_bridges_count > 3:
+        achievements.append(("Teraz już tylko z górki", "../static/public/koty_za_ploty.png"))
+
+    if user.points > 9000:
+        achievements.append(("Jest większe niż 9000", "../static/public/koty_za_ploty.png"))
+
+
     return render_template("profile.html", 
                            name=current_user.user_id, 
                            profile=profile_img, 
                            bridges=last_three_bridges, 
-                           points=visited_bridges_count)
+                           points=visited_bridges_count,
+                           achievements=achievements
+                           )
 
 @main.route('/login')
 @swag_from({
