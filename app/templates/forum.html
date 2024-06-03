@@ -1,15 +1,26 @@
 {% include 'partials/header.html' %}
-<div class="container-sm pt-5">
-    <img src="{{image}}" class="img-fluid" width="100%">
-</div>
-<div class="container-sm mt-5 mb-1">
-    {% for comment in comments %}
-    <div class="card card-body p-4 comment">
-        <h5 class="username">{{ comment.username }}</h5>
-        <h2>{{ comment.text }}</h2>
-    </div>
-    {% endfor %}
+<div class="container-sm pt-5 bridge_image">
 
+</div>
+<div class="container-sm mt-5 mb-1 commentBody">
+
+
+    <script>
+        $.get($(location).attr("href"), function (data) {
+        for (const element of data) {
+            image = $("<img>", {"src": element.image_path, "class": "img-fluid"})
+            $(".bridge_image").append(image)
+            let i = 0;
+            divCard = $("<div>")
+            divCard.addClass("card card-body p-4 comment")
+            divCard.append("<h5>"+ element.username + "</h5>").addClass("comment")
+            divCard.append("<h2>"+ element.text + "</h2>")
+            $(".commentBody").append(divCard)
+        }
+    });
+    </script>
+</div>
+<div class="container-sm mt-1 mb-1">
     <div class="card card-body mt-1 comment">
         <form method="post">
             <input type="text" name="text" class="card card-body comment-response pt-2" placeholder="Comment">
