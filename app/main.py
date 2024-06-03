@@ -64,7 +64,7 @@ def profile():
 
     achievements = [("Konto że hej", "../static/public/koty_za_ploty.png")]
 
-     
+
     if visited_bridges_count > 1:
         achievements.append(("Pierwsze koty za płoty", "../static/public/koty_za_ploty.png"))
     
@@ -151,7 +151,7 @@ def get_users_sorte_by_points():
 
 
 
-@main.route('/gameplay')
+@main.route('/api/gameplay')
 @login_required
 @swag_from({
     'responses': {
@@ -166,8 +166,8 @@ def get_users_sorte_by_points():
     }
 })
 def gameplay():
-    # tymczasowy template w ramach testu działania
-    return render_template('gameplay_page.html')
+    bridges = Bridge.query.all()
+    return render_template('gameplay_page.html', bridges=bridges)
 
 # Powinno być post na baze danych ale w ramach testu czy działa daje na ten sam url post
 # @main.route('/forum/<bridgeid>', methods = ['POST', 'GET'])

@@ -7,13 +7,13 @@ from flasgger import swag_from
 
 admin_bp = Blueprint('admin', __name__)
 
-@admin_bp.route('/bridges', methods=['GET'])
+@admin_bp.route('/api/add_bridge', methods=['GET'])
 @login_required
 @admin_required
 def show_add_bridge_form():
     return render_template('add_bridge.html')
 
-@admin_bp.route('/bridges', methods=['POST'])
+@admin_bp.route('/api/add_bridge', methods=['POST'])
 @login_required
 @admin_required
 @swag_from({
@@ -79,3 +79,80 @@ def add_bridge():
     db.session.add(new_bridge)
     db.session.commit()
     return jsonify({'message': 'Bridge successfully added'}), 201
+
+
+
+@admin_bp.route('/api/delete_bridge', methods=['GET'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'responses': {
+        200: {
+            'description': 'Form to delete a bridge',
+            'content': {
+                'text/html': {
+                    'example': '<html>Delete Bridge Form</html>'
+                }
+            }
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def show_delete_bridge_form():
+    return render_template('delete_bridge.html')
+
+
+@admin_bp.route('/api/delete_bridge/<int:bridge_id>', methods=['DELETE'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'parameters': [
+        {
+            'name': 'bridge_id',
+            'in': 'path',
+            'description': 'ID of the bridge to delete',
+            'required': True,
+            'schema': {
+                'type': 'integer'
+            }
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'Bridge successfully deleted',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'message': {'type': 'string'}
+                }
+            }
+        },
+        400: {
+            'description': 'Invalid bridge ID'
+        },
+        404: {
+            'description': 'Bridge not found'
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def delete_bridge(bridge_id):
+    bridge = Bridge.query.get(bridge_id)
+    if bridge is None:
+        return jsonify({'error': 'Bridge not found'}), 404
+
+    db.session.delete(bridge)
+    db.session.commit()
+    return jsonify({'message': 'Bridge successfully deleted'}), 200

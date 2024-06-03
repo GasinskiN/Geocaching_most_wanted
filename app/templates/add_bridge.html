@@ -36,7 +36,7 @@
             var latitude = document.getElementById('latitude').value;
             var longitude = document.getElementById('longitude').value;
             
-            fetch('/bridges', {
+            fetch('/api/add_bridge', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
