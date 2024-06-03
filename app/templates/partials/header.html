@@ -39,17 +39,18 @@
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Forum
               </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/forum/most_grunwaldzki">Most Grunwaldzki</a></li>
-                <li><a class="dropdown-item" href="/forum/most_linowy">Most Milenijny</a></li>
-                <li><a class="dropdown-item" href="/forum/most_zwierzyniecki">Most Zwierzyniecki</a></li>
+              <ul class="dropdown-menu bridges_dropdown">
+
               </ul>
               <script>
                 $.post("api/forum/bridges", function(data){
                   for(const bridge of data){
+                    console.log(bridge)
                     dropdown = $("<a>", {"class": "dropdown-item", "href":"/forum/" + bridge.bridge_id})
                     dropdown.text(bridge.name)
-                    $(".dropwdown-item").append("<li></li>").append(dropdown)
+                    list = $("<li>")
+                    list.append(dropdown)
+                    $(".bridges_dropdown").append(list)
                   }
                 });
               </script>
