@@ -191,7 +191,7 @@ def gameplay():
 def forum():
     return render_template('forum.html')
 
-@main.route("/api/forum/bridges", method=['POST'])
+@main.route("/api/forum/bridges", methods=['POST'])
 @login_required
 def get_bridges_forum():
     if request.method == 'POST':
@@ -233,7 +233,7 @@ def add_comment(bridgeid):
             )
             db.session.add(new_comment)
             db.session.commit()
-    return jsonify({'message': "Comment added succesfully"}), 201
+        return jsonify({'message': "Comment added succesfully"}), 201
 
 
 
