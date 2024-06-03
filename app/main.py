@@ -215,6 +215,8 @@ def get_bridge_forum(bridegeid):
             'image_path': bridge.image_path,
             'description': bridge.description
         }
+        return jsonify(payload), 200
+
 @main.route("/api/forum/getcomments/<int:bridgeid>", methods=['POST'])
 @login_required
 def get_comments(bridgeid):
@@ -225,9 +227,9 @@ def get_comments(bridgeid):
             user = User.query.filter_by(user_id=comment.user_id).first()
             comment_data = {
                 'text': comment.text,
-                'user': user.username
+                'username': user.username
             }
-            payload.append(comment)
+            payload.append(comment_data)
         return jsonify(payload), 200
 
 @main.route("/api/forum/addcomment/<int:bridgeid>", methods=['POST'])
