@@ -6,18 +6,20 @@
 
 
     <script>
-        $.get($(location).attr("href"), function (data) {
-        for (const element of data) {
+        $.post("/api/forum/getComments/{{bridgeid}}", function (data) {
+            for (const element of data) {
+                let i = 0;
+                divCard = $("<div>")
+                    divCard.addClass("card card-body p-4 comment")
+                    divCard.append("<h5>"+ element.username + "</h5>").addClass("comment")
+                    divCard.append("<h2>"+ element.text + "</h2>")
+                    $(".commentBody").append(divCard)
+                }
+            });
+        $.post("/api/forum/bridge", function(data){
             image = $("<img>", {"src": element.image_path, "class": "img-fluid"})
             $(".bridge_image").append(image)
-            let i = 0;
-            divCard = $("<div>")
-            divCard.addClass("card card-body p-4 comment")
-            divCard.append("<h5>"+ element.username + "</h5>").addClass("comment")
-            divCard.append("<h2>"+ element.text + "</h2>")
-            $(".commentBody").append(divCard)
-        }
-    });
+        });
     </script>
 </div>
 <div class="container-sm mt-1 mb-1">
