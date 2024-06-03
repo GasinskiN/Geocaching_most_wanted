@@ -47,6 +47,9 @@ def create_app():
     from .admin import admin_bp as admin_blueprint
     app.register_blueprint(admin_blueprint)
 
+    from .forum import forum as forum_blueprint
+    app.register_blueprint(forum_blueprint)
+
 
     swagger = Swagger(app)
     

@@ -10,6 +10,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/register')
 @swag_from({
+    'tags':['view'],
     'responses': {
         200: {
             'description': 'Register page',
@@ -26,6 +27,7 @@ def register():
 
 @auth.route('/register', methods=['POST'])
 @swag_from({
+    'tags':['user'],
     'responses': {
         302: {
             'description': 'Redirect to login page on success'
@@ -67,6 +69,7 @@ def register_post():
 
 @auth.route('/login')
 @swag_from({
+    'tags':['view'],
     'responses': {
         200: {
             'description': 'Login page',
@@ -83,6 +86,7 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 @swag_from({
+    'tags':['user'],
     'responses': {
         302: {
             'description': 'Redirect to profile page on success or back to login on failure'
@@ -132,6 +136,7 @@ def login_post():
 @auth.route('/logout')
 @login_required
 @swag_from({
+    'tags':['view'],
     'responses': {
         302: {
             'description': 'Redirect to login page after logout'
