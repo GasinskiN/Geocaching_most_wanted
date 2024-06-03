@@ -207,9 +207,9 @@ def get_bridges_forum():
 
 @main.route("/api/forum/bridge/<int:bridgeid>", methods=['POST'])
 @login_required
-def get_bridge_forum(bridegeid):
+def get_bridge_forum(bridgeid):
     if request.method == 'POST':
-        bridge = Bridge.query.filter_by(bridge_id=bridegeid)
+        bridge = Bridge.query.filter_by(bridge_id=bridgeid).first()
         payload = {
             'name': bridge.name,
             'image_path': bridge.image_path,
@@ -245,7 +245,10 @@ def add_comment(bridgeid):
             )
             db.session.add(new_comment)
             db.session.commit()
-        return jsonify({'message': "Comment added succesfully"}), 201
+
+            return jsonify({'message': "Comment added succesfully"}), 201
+        else:
+            return jsonify({'message': "Comment text can't be empty"}), 400
 
 
 
