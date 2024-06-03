@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from flask_login import current_user, login_required
 from .models import db, Comment, Bridge, User
 from flasgger import swag_from
@@ -131,8 +131,18 @@ def register():
     }
 })
 def leaderboard():
-    users = [{"username": "janusz", "rank": 1, "points": 7000}, {"username": "marek", "rank": 2, "points": 5500} ]
-    return render_template('leaderboard.html', users = users)
+    return render_template('leaderboard.html')
+
+@main.route('/api/leaderboard')
+def get_users_sorte_by_points():
+    user = User.query.order_by(User.points).first()
+    data = {
+        'rank': 1,
+        'username': user.username,
+        'points': user.points
+    }
+    return jsonify(data), 200
+
 
 
 @main.route('/gameplay')
