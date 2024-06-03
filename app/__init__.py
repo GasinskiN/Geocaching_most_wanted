@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flasgger import Swagger
 from werkzeug.security import generate_password_hash
-from flask_migrate import Migrate
 
 db = SQLAlchemy()
 
