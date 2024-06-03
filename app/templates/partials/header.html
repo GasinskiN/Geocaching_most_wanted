@@ -44,6 +44,15 @@
                 <li><a class="dropdown-item" href="/forum/most_linowy">Most Milenijny</a></li>
                 <li><a class="dropdown-item" href="/forum/most_zwierzyniecki">Most Zwierzyniecki</a></li>
               </ul>
+              <script>
+                $.post("api/forum/bridges", function(data){
+                  for(const bridge of data){
+                    dropdown = $("<a>", {"class": "dropdown-item", "href":"/forum/" + bridge.bridge_id})
+                    dropdown.text(bridge.name)
+                    $(".dropwdown-item").append("<li></li>").append(dropdown)
+                  }
+                });
+              </script>
             </li>    
             {% else %}
             <li class="nav-item">
