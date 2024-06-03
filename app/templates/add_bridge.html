@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj Most</title>
+</head>
+<body>
+    <h1>Dodaj Most</h1>
+    <form id="addBridgeForm">
+        <label for="name">Nazwa Mostu:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="description">Opis:</label>
+        <input type="text" id="description" name="description">
+        
+        <label for="image_path">Ścieżka do Obrazu:</label>
+        <input type="text" id="image_path" name="image_path" required>
+        
+        <label for="latitude">Szerokość Geograficzna:</label>
+        <input type="number" step="0.000001" id="latitude" name="latitude" required>
+        
+        <label for="longitude">Długość Geograficzna:</label>
+        <input type="number" step="0.000001" id="longitude" name="longitude" required>
+        
+        <button type="button" onclick="submitForm()">Dodaj Most</button>
+    </form>
+
+    <p id="responseOutput"></p>
+
+    <script>
+        function submitForm() {
+            var name = document.getElementById('name').value;
+            var description = document.getElementById('description').value;
+            var image_path = document.getElementById('image_path').value;
+            var latitude = document.getElementById('latitude').value;
+            var longitude = document.getElementById('longitude').value;
+            
+            fetch('/bridges', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description,
+                    image_path: image_path,
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('responseOutput').innerText = "Most dodany pomyślnie!";
+                } else {
+                    document.getElementById('responseOutput').innerText = data.error || "Wystąpił nieznany błąd.";
+                }
+            })
+            .catch(error => {
+                document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
+            });
+        }
+    </script>
+</body>
+</html>
