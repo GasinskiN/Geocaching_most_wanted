@@ -119,6 +119,7 @@ def register():
 
 @main.route('/leaderboard')
 @swag_from({
+    'tages': ['view'],
     'responses': {
         200: {
             'description': 'Leaderboard page',
@@ -185,50 +186,55 @@ def gameplay():
 #     if request.method == "GET":
 #         return render_template('forum.html', comments = comments, image=image)
 
-@main.route('/forum/<bridgeid>', methods=['POST', 'GET'])
+@main.route('/forum', methods=['GET'])
 @login_required
-@swag_from({
-    'responses': {
-        200: {
-            'description': 'Forum page',
-            'content': {
-                'text/html': {
-                    'example': '<html>Forum Page</html>'
-                }
-            }
-        }
-    },
-    'parameters': [
-        {
-            'name': 'bridgeid',
-            'in': 'path',
-            'type': 'string',
-            'required': True,
-            'description': 'ID of the bridge'
-        }
-    ]
-})
-def forum(bridgeid):
+def forum():
+    return render_template('forum.html')
+
+@main.route("/api/forum/bridges", method=['POST'])
+@login_required
+def get_bridges_forum():
     if request.method == 'POST':
-        # Get the comment text from the form
+        bridges = Bridge.query.all()
+        payload = []
+        for bridge in bridges:
+            bridge_data = {
+                'name': bridge.name,
+                'bridge_id': bridge.bridge_id
+            }
+            payload.append(bridge_data)
+        return jsonify(payload), 200
+    
+@main.route("/api/forum/getcomments/<int:bridgeid>", methods=['POST'])
+@login_required
+def get_comments(bridgeid):
+    if request.method == 'POST':
+        comments = Comment.query.filter_by(bridge_id=bridgeid).all()
+        payload = []
+        for comment in comments:
+            user = User.query.filter_by(user_id=comment.user_id).first()
+            comment_data = {
+                'text': comment.text,
+                'user': user.username
+            }
+            payload.append(comment)
+        return jsonify(payload), 200
+
+@main.route("/api/forum/addcomment/<int:bridgeid>", methods=['POST'])
+@login_required
+def add_comment(bridgeid):
+    if request.method == 'POST':
         comment_text = request.form.get('text')
         if comment_text:
-            # Create a new Comment object
             new_comment = Comment(
                 user_id=current_user.user_id,
                 bridge_id=bridgeid,
                 text=comment_text
             )
-            # Add the new comment to the database
             db.session.add(new_comment)
             db.session.commit()
+    return jsonify({'message': "Comment added succesfully"}), 201
 
-    # Retrieve all comments for the bridge
-    comments = Comment.query.filter_by(bridge_id=bridgeid).all()
-    formatted_comments = [{'text': c.text, 'username': c.user.username} for c in comments]
-
-    image = "../static/public/" + bridgeid + ".jpg"
-    return render_template('forum.html', comments=formatted_comments, image=image)
 
 
 @main.errorhandler(404)
@@ -246,22 +252,3 @@ def forum(bridgeid):
 })
 def page_not_found(e):
     return render_template("error.html")
-
-@main.route('/commentReply',methods = ['POST', 'GET'])
-@swag_from({
-    'responses': {
-        200: {
-            'description': 'Comment reply page',
-            'content': {
-                'text/html': {
-                    'example': '<html>Comment Reply Page</html>'
-                }
-            }
-        }
-    }
-})
-def result():
-    if request.method == 'POST':
-        response = request.form
-    #   respnse jest przekazywane do html
-    return render_template("test.html", response = response)

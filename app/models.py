@@ -56,8 +56,6 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     bridge_id = db.Column(db.Integer, db.ForeignKey('bridge.bridge_id'), nullable=False)
     text = db.Column(db.String, nullable=False)
-    like_count = db.Column(db.Integer, default=0)
-    dislike_count = db.Column(db.Integer, default=0)
 
     user = db.relationship('User', back_populates='comments')
     bridge = db.relationship('Bridge')
