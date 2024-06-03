@@ -6,7 +6,7 @@
 
 
     <script>
-        $.post("/api/forum/getComments/{{bridgeid}}", function (data) {
+        $.post("/api/forum/getcomments/{{bridgeid}}", function (data) {
             for (const element of data) {
                 let i = 0;
                 divCard = $("<div>")
@@ -16,7 +16,7 @@
                     $(".commentBody").append(divCard)
                 }
             });
-        $.post("/api/forum/bridge", function(data){
+        $.post("/api/forum/bridge/{{bridgeid}}", function(data){
             image = $("<img>", {"src": element.image_path, "class": "img-fluid"})
             $(".bridge_image").append(image)
         });
