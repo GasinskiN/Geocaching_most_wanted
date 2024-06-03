@@ -188,8 +188,8 @@ def gameplay():
 
 @main.route('/forum/<int:bridgeid>', methods=['GET'])
 @login_required
-def forum():
-    return render_template('forum.html')
+def forum(bridgeid):
+    return render_template('forum.html', bridgeid=bridgeid)
 
 @main.route("/api/forum/bridges", methods=['POST'])
 @login_required
@@ -204,7 +204,17 @@ def get_bridges_forum():
             }
             payload.append(bridge_data)
         return jsonify(payload), 200
-    
+
+@main.route("/api/forum/bridge/<int:bridgeid>", methods=['POST'])
+@login_required
+def get_bridge_forum(bridegeid):
+    if request.method == 'POST':
+        bridge = Bridge.query.filter_by(bridge_id=bridegeid)
+        payload = {
+            'name': bridge.name,
+            'image_path': bridge.image_path,
+            'description': bridge.description
+        }
 @main.route("/api/forum/getcomments/<int:bridgeid>", methods=['POST'])
 @login_required
 def get_comments(bridgeid):
