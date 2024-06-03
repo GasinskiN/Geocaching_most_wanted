@@ -1,0 +1,44 @@
+{% include 'partials/header.html' %}
+
+<h1>Usuń Osiągnięcie</h1>
+<form id="deleteAchievementForm">
+    <label for="achievement_id">Wybierz Osiągnięcie do Usunięcia:</label>
+    <select id="achievement_id" name="achievement_id" required>
+        {% for achievement in achievements %}
+            <option value="{{ achievement.achievement_id }}">{{ achievement.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="button" onclick="submitForm()">Usuń Osiągnięcie</button>
+</form>
+
+<p id="responseOutput"></p>
+
+<script>
+    function submitForm() {
+        var achievement_id = document.getElementById('achievement_id').value;
+
+        fetch('/api/delete_achievement', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                achievement_id: parseInt(achievement_id)
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                document.getElementById('responseOutput').innerText = "Osiągnięcie usunięte pomyślnie!";
+            } else {
+                document.getElementById('responseOutput').innerText = data.error || "Wystąpił nieznany błąd.";
+            }
+        })
+        .catch(error => {
+            document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
+        });
+    }
+</script>
+
+{% include 'partials/footer.html' %}
