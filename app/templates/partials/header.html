@@ -43,7 +43,7 @@
 
               </ul>
               <script>
-                $.post("api/forum/bridges", function(data){
+                $.post("/api/forum/bridges", function(data){
                   for(const bridge of data){
                     console.log(bridge)
                     dropdown = $("<a>", {"class": "dropdown-item", "href":"/forum/" + bridge.bridge_id})
