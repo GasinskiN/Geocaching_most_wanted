@@ -1,48 +1,83 @@
 {% include 'partials/header.html' %}
 
 <h1>Gameplay</h1>
-    <form id="locationForm" method="POST" action={{ url_for('main.gameplay')}}>
-        <label for="bridgeName">Wpisz nazwę mostu, który chcesz zdobyć:</label>
-        <input type="text" id="bridgeName" name="bridgeName" required>
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-        <button type="button" onclick="getLocation()">Znajdź moją lokalizację</button>
-        <button type="submit">Prześlij</button>
-    </form>
+<form id="locationForm">
+    <label for="bridgeName">Wybierz most, który chcesz zdobyć:</label>
+    <select id="bridgeName" name="bridgeName" required>
+        {% for bridge in bridges %}
+            <option value="{{ bridge.name }}">{{ bridge.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="hidden" id="latitude" name="latitude">
+    <input type="hidden" id="longitude" name="longitude">
+    <button type="button" onclick="getLocation()">Znajdź moją lokalizację</button>
+    <button type="button" onclick="submitForm()">Prześlij</button>
+</form>
 
-    <p id="locationOutput"></p>
+<p id="locationOutput"></p>
+<p id="responseOutput"></p>
 
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lon;
-                    document.getElementById('locationOutput').innerText = "Szerokość geograficzna: " + lat + ", Długość geograficzna: " + lon;
-                }, function(error) {
-                    var errorMessage;
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = "Użytkownik odmówił zgody na geolokalizację.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Informacja o lokalizacji jest niedostępna.";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "Przekroczono czas oczekiwania na lokalizację.";
-                            break;
-                        default:
-                            errorMessage = "Wystąpił nieznany błąd.";
-                            break;
-                    }
-                    document.getElementById("locationOutput").innerText = errorMessage;
-                });
-            } else {
-                document.getElementById("locationOutput").innerText = "Geolokalizacja nie jest wspierana przez tę przeglądarkę.";
-            }
+<script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lon;
+                document.getElementById('locationOutput').innerText = "Szerokość geograficzna: " + lat + ", Długość geograficzna: " + lon;
+            }, function(error) {
+                var errorMessage;
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = "Użytkownik odmówił zgody na geolokalizację.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = "Informacja o lokalizacji jest niedostępna.";
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage = "Przekroczono czas oczekiwania na lokalizację.";
+                        break;
+                    default:
+                        errorMessage = "Wystąpił nieznany błąd.";
+                        break;
+                }
+                document.getElementById("locationOutput").innerText = errorMessage;
+            });
+        } else {
+            document.getElementById("locationOutput").innerText = "Geolokalizacja nie jest wspierana przez tę przeglądarkę.";
         }
-    </script>
+    }
+
+    function submitForm() {
+        var bridgeName = document.getElementById('bridgeName').value;
+        var latitude = document.getElementById('latitude').value;
+        var longitude = document.getElementById('longitude').value;
+        
+        fetch('/api/gameplay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                bridgeName: bridgeName,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById('responseOutput').innerText = "Most zdobyty!";
+                window.location.href = '/profile'; // Redirect to profile page
+            } else {
+                document.getElementById('responseOutput').innerText = data.error;
+            }
+        })
+        .catch(error => {
+            document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
+        });
+    }
+</script>
 
 {% include 'partials/footer.html' %}
