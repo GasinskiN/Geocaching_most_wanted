@@ -149,6 +149,7 @@ def get_comments(bridgeid):
 def add_comment(bridgeid):
     if request.method == 'POST':
         comment_text = request.form.get('text')
+        print(comment_text)
         if comment_text:
             new_comment = Comment(
                 user_id=current_user.user_id,

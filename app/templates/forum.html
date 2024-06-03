@@ -6,27 +6,51 @@
 
 
     <script>
-        $.post("/api/forum/getcomments/{{bridgeid}}", function (data) {
-            for (const element of data) {
-                let i = 0;
-                divCard = $("<div>")
-                    divCard.addClass("card card-body p-4 comment")
-                    divCard.append("<h5>"+ element.username + "</h5>").addClass("comment")
-                    divCard.append("<h2>"+ element.text + "</h2>")
-                    $(".commentBody").append(divCard)
-                }
-            });
+
+        function fetchComments(){
+            $.post("/api/forum/getcomments/{{bridgeid}}", function (data) {
+                $(".commentBody").empty();
+                console.log(data);
+                for (const element of data) {
+                    let i = 0;
+                    divCard = $("<div>")
+                        divCard.addClass("card card-body p-4 comment")
+                        divCard.append("<h5>"+ element.username + "</h5>").addClass("comment")
+                        divCard.append("<h2>"+ element.text + "</h2>")
+                        $(".commentBody").append(divCard)
+                    }
+                });
+        }
+        fetchComments();
         $.post("/api/forum/bridge/{{bridgeid}}", function(data){
-            image = $("<img>", {"src": element.image_path, "class": "img-fluid"})
+            image = $("<img>", {"src": data.image_path, "class": "img-fluid"})
             $(".bridge_image").append(image)
+        });
+        $(document).ready(function() {
+            $('#target').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                $.ajax({
+                    url: '/api/forum/addcomment/{{bridgeid}}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').text(response.message);
+                        fetchComments();
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
         });
     </script>
 </div>
 <div class="container-sm mt-1 mb-1">
     <div class="card card-body mt-1 comment">
-        <form method="post">
-            <input type="text" name="text" class="card card-body comment-response pt-2" placeholder="Comment">
-            <button class="btn btn-secondary mt-2 ms-4" type="submit" value="submit">Dodaj komentarz</button>
+        <form id="target" >
+            <input type="text" name="text" class="card card-body comment-response pt-2" id="post_comment" placeholder="Comment">
+            <button class="btn btn-secondary mt-2 ms-4"type="submit">Dodaj komentarz</button>
         </form>
     </div>
 </div>
