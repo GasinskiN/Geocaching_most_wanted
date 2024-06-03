@@ -1,24 +1,17 @@
-# Use a base image with Python installed
+# Użyj obrazu bazowego Pythona
 FROM python:3.9
 
-# Set the working directory inside the container
+# Ustaw katalog roboczy
 WORKDIR /app
 
-# Copy the requirements.txt file to the container
-COPY requirements.txt .
-
-# Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application code to the container
+# Skopiuj pliki aplikacji do kontenera
 COPY . .
 
-# Set environment variables
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
+# Zainstaluj zależności
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port on which the app will run
+# Otwórz port 5000, na którym będzie działać aplikacja Flask
 EXPOSE 5000
 
-# Run the application
-CMD ["flask", "run"]
+# Uruchom aplikację Flask
+CMD ["flask", "run", "--host=0.0.0.0"]
