@@ -39,7 +39,7 @@ def update_user_bridges(user_id: int, bridge_name: str) -> None:
     db.session.execute(stmt)
     db.session.commit()
 
-@gameplay_bp.route('/gameplay', methods=['GET'])
+@gameplay_bp.route('/api/gameplay', methods=['GET'])
 @login_required
 @swag_from({
     'responses': {
@@ -57,7 +57,7 @@ def gameplay_page():
     bridges = Bridge.query.all()
     return render_template('gameplay_page.html', bridges=bridges)
 
-@gameplay_bp.route('/gameplay', methods=['POST'])
+@gameplay_bp.route('/api/gameplay', methods=['POST'])
 @login_required
 @swag_from({
     'responses': {
