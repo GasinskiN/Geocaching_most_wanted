@@ -186,7 +186,7 @@ def gameplay():
 #     if request.method == "GET":
 #         return render_template('forum.html', comments = comments, image=image)
 
-@main.route('/forum', methods=['GET'])
+@main.route('/forum/<int:bridgeid>', methods=['GET'])
 @login_required
 def forum():
     return render_template('forum.html')
