@@ -37,6 +37,7 @@ def update_user_bridges(user_id: int, bridge_name: str) -> None:
         timestamp=datetime.utcnow()
     )
     db.session.execute(stmt)
+    user.points += 100
     db.session.commit()
 
 @gameplay_bp.route('/api/gameplay', methods=['GET'])
