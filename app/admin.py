@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, render_template
 from flask_login import login_required
 from . import db
-from .models import Bridge
+from .models import Bridge, Achievement
 from .decorators import admin_required
 from flasgger import swag_from
 
@@ -156,3 +156,169 @@ def delete_bridge(bridge_id):
     db.session.delete(bridge)
     db.session.commit()
     return jsonify({'message': 'Bridge successfully deleted'}), 200
+
+
+
+
+@admin_bp.route('/api/delete_achievement', methods=['GET'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'responses': {
+        200: {
+            'description': 'Form to delete an achievement',
+            'content': {
+                'text/html': {
+                    'example': '<html>Delete Achievement Form</html>'
+                }
+            }
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def show_delete_achievement_form():
+    achievements = Achievement.query.all()
+    return render_template('delete_achievement.html', achievements=achievements)
+
+# Obsługa żądania usunięcia osiągnięcia
+@admin_bp.route('/api/delete_achievement', methods=['POST'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'parameters': [
+        {
+            'name': 'achievement_id',
+            'in': 'body',
+            'description': 'ID of the achievement to delete',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'achievement_id': {'type': 'integer'}
+                },
+                'required': ['achievement_id']
+            }
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'Achievement successfully deleted',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'message': {'type': 'string'}
+                }
+            }
+        },
+        400: {
+            'description': 'Invalid input'
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def delete_achievement():
+    data = request.get_json()
+    achievement_id = data.get('achievement_id')
+
+    achievement = Achievement.query.get(achievement_id)
+    if achievement is None:
+        return jsonify({'error': 'Invalid input'}), 400
+
+    db.session.delete(achievement)
+    db.session.commit()
+    return jsonify({'message': 'Achievement successfully deleted'}), 200
+
+
+@admin_bp.route('/api/add_achievement', methods=['GET'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'responses': {
+        200: {
+            'description': 'Form to add an achievement',
+            'content': {
+                'text/html': {
+                    'example': '<html>Add Achievement Form</html>'
+                }
+            }
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def show_add_achievement_form():
+    return render_template('add_achievement.html')
+
+# Obsługa żądania dodania osiągnięcia
+@admin_bp.route('/api/add_achievement', methods=['POST'])
+@login_required
+@admin_required
+@swag_from({
+    'tags': ['Admin'],
+    'parameters': [
+        {
+            'name': 'achievement',
+            'in': 'body',
+            'description': 'Achievement to add',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'name': {'type': 'string'},
+                    'description': {'type': 'string'}
+                },
+                'required': ['name']
+            }
+        }
+    ],
+    'responses': {
+        201: {
+            'description': 'Achievement successfully added',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'message': {'type': 'string'}
+                }
+            }
+        },
+        400: {
+            'description': 'Invalid input'
+        },
+        401: {
+            'description': 'Unauthorized'
+        },
+        403: {
+            'description': 'Forbidden'
+        }
+    }
+})
+def add_achievement():
+    data = request.get_json()
+    name = data.get('name')
+    description = data.get('description')
+
+    if not name:
+        return jsonify({'error': 'Invalid input'}), 400
+
+    new_achievement = Achievement(
+        name=name,
+        description=description
+    )
+    db.session.add(new_achievement)
+    db.session.commit()
+    return jsonify({'message': 'Achievement successfully added'}), 201

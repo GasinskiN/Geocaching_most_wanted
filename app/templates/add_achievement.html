@@ -1,0 +1,45 @@
+{% include 'partials/header.html' %}
+
+<h1>Dodaj Osiągnięcie</h1>
+<form id="addAchievementForm">
+    <label for="name">Nazwa Osiągnięcia:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="description">Opis:</label>
+    <input type="text" id="description" name="description">
+
+    <button type="button" onclick="submitForm()">Dodaj Osiągnięcie</button>
+</form>
+
+<p id="responseOutput"></p>
+
+<script>
+    function submitForm() {
+        var name = document.getElementById('name').value;
+        var description = document.getElementById('description').value;
+
+        fetch('/api/add_achievement', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                document.getElementById('responseOutput').innerText = "Osiągnięcie dodane pomyślnie!";
+            } else {
+                document.getElementById('responseOutput').innerText = data.error || "Wystąpił nieznany błąd.";
+            }
+        })
+        .catch(error => {
+            document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
+        });
+    }
+</script>
+
+{% include 'partials/footer.html' %}
