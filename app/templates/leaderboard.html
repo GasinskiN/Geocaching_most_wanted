@@ -1,75 +1,56 @@
 {% include 'partials/header.html' %}
-    <div class="container-sm text-center">
-        <h1>Leaderboard</h1>
-    </div>
-    <div class="container-sm pt-5">
-        <div class="container text-center">
-            <div class="row">
+<div class="container-sm text-center">
+    <h1>Leaderboard</h1>
+</div>
+<div class="container-sm pt-5">
+    <div class="container text-center leaderboard">
+        <div class="row">
             <div class="col">
                 <div class="card pt-2 rankData">
-                </div>
-            </div>
-            <div class="col">
-                <div class="card pt-2 usernameData">
-                </div>
-            </div>
-            <div class="col">
-                <div class="card pt-2 pointsData">
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-
-<script>
-    fetch('/api/leaderboard')
-        .then(response => response.json())
-        .then(data => {
-            const displayUsername = document.getElementsByClassName("usernameData")
-            const displayPoints = document.getElementsByClassName("pointsData")
-            const displayRank = document.getElementsByClassName("rankData")
-
-            // Create HTML elements to display the JSON data
-            const nameElement = document.createElement("h3");
-            nameElement.textContent = data.username;
-
-            const rankElement = document.createElement("h3");
-            rankElement.textContent = data.rank;
-
-            const pointsElement = document.createElement("h3");
-            pointsElement.textContent = data.points;
-
-
-
-            // Append the elements to the "dataDisplay" div
-            displayUsername.appendChild(nameElement);
-            displayRank.appendChild(rankElement);
-            displayPoints.appendChild(pointsElement)
-        })
-        .catch(error => console.error("Error fetching JSON data:", error));
-
-
-</script>
-    <!-- <div class="container-sm pt-5">
-        <div class="container text-center">
-            <div class="row">
-            <div class="col">
-                <div class="card pt-2">
                     <h3>Rank</h3>
                 </div>
             </div>
             <div class="col">
-                <div class="card pt-2">
-                    <h3>Player</h3>
+                <div class="card pt-2 usernameData">
+                    <h3>Username</h3>
                 </div>
             </div>
             <div class="col">
-                <div class="card pt-2">
-                    <h3>Score</h3>
+                <div class="card pt-2 pointsData">
+                    <h3>Points</h3>
                 </div>
             </div>
-            </div>
         </div>
-    </div> -->
-    {% include 'partials/footer.html' %}
+    </div>
+</div>
+
+<script>
+    $.get("/api/leaderboard", function (data) {
+        for (const element of data) {
+
+            let i = 0;
+            let divRow = $("<div>", { "id": i, "class": "row" })
+            $(".leaderboard").append(divRow)
+            divCol1 = $("<div>", { "class": "col" })
+            divCol2 = $("<div>", { "class": "col" })
+            divCol3 = $("<div>", { "class": "col" })
+            divRow.append(divCol1)
+            divRow.append(divCol2)
+            divRow.append(divCol3)
+            divCard1 = $("<div>")
+            divCard1.addClass("card mt-2 rankData")
+            divCard2 = $("<div>")
+            divCard2.addClass("card mt-2 usernameData")
+            divCard3 = $("<div>")
+            divCard3.addClass("card mt-2 pointsData")
+            divCol1.append(divCard1)
+            divCol2.append(divCard2)
+            divCol3.append(divCard3)
+            divCard1.append("<h3>"+ element.rank+"<h3>")
+            divCard2.append("<h3>"+ element.username+"<h3>")
+            divCard3.append("<h3>"+ element.points+"<h3>")
+        }
+    });
+</script>
+
+{% include 'partials/footer.html' %}

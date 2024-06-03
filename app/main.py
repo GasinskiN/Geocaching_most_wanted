@@ -136,7 +136,7 @@ def leaderboard():
 
 @main.route('/api/leaderboard')
 def get_users_sorte_by_points():
-    users = User.query.order_by(User.points).All()
+    users = User.query.order_by(User.points).all()
     rank = 1
     payload= []
     for user in users:
