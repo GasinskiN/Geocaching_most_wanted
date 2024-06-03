@@ -28,12 +28,13 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)
     points = db.Column(db.Integer, default=0)
 
+    # potrzebne do doadania admina
+    role = db.Column(db.String(50), nullable=False, default='user')
+
     #visited_bridges = db.relationship('Bridge', secondary=user_bridge_association, back_populates='users')
     visited_bridges = db.relationship('Bridge', secondary=user_bridge_association, back_populates='users', order_by=user_bridge_association.c.timestamp)
     comments = db.relationship('Comment', back_populates='user')
     achievements = db.relationship('Achievement', secondary=user_achievement_association, back_populates='users')
-    # potrzebne do doadania admina
-    role = db.Column(db.String(50), nullable=False, default='user')
 
     def get_id(self):
         return self.user_id

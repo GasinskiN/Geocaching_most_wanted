@@ -135,13 +135,18 @@ def leaderboard():
 
 @main.route('/api/leaderboard')
 def get_users_sorte_by_points():
-    user = User.query.order_by(User.points).first()
-    data = {
-        'rank': 1,
-        'username': user.username,
-        'points': user.points
-    }
-    return jsonify(data), 200
+    users = User.query.order_by(User.points).All()
+    rank = 1
+    payload= []
+    for user in users:
+        data = {
+            'rank': rank,
+            'username': user.username,
+            'points': user.points
+        }
+        payload.append(data)
+        rank += 1
+    return jsonify(payload), 200
 
 
 
