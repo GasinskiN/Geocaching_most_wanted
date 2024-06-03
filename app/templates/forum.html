@@ -17,16 +17,28 @@
                 }
             });
         $.post("/api/forum/bridge/{{bridgeid}}", function(data){
-            image = $("<img>", {"src": element.image_path, "class": "img-fluid"})
+            image = $("<img>", {"src": data.image_path, "class": "img-fluid"})
             $(".bridge_image").append(image)
         });
+        $('#submit').click(function() {
+        $.ajax({
+        url: 'http://127.0.0.1:5000/api/forum/addcomment/{{bridgeid}}',
+        type: 'POST',
+        data: {
+            text: $("#post_comment").val()
+        },
+        success: function(msg) {
+            alert('Email Sent');
+        }               
+    });
+});
     </script>
 </div>
 <div class="container-sm mt-1 mb-1">
     <div class="card card-body mt-1 comment">
-        <form method="post">
-            <input type="text" name="text" class="card card-body comment-response pt-2" placeholder="Comment">
-            <button class="btn btn-secondary mt-2 ms-4" type="submit" value="submit">Dodaj komentarz</button>
+        <form id="target" method="post" action="/api/forum/addcomment/{{bridgeid}}">
+            <input type="text" name="text" class="card card-body comment-response pt-2" id="post_comment" placeholder="Comment">
+            <button class="btn btn-secondary mt-2 ms-4" id="submit" type="submit" value="submit">Dodaj komentarz</button>
         </form>
     </div>
 </div>

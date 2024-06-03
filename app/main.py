@@ -149,6 +149,7 @@ def get_comments(bridgeid):
 def add_comment(bridgeid):
     if request.method == 'POST':
         comment_text = request.form.get('text')
+        print(comment_text)
         if comment_text:
             new_comment = Comment(
                 user_id=current_user.user_id,
@@ -158,7 +159,7 @@ def add_comment(bridgeid):
             db.session.add(new_comment)
             db.session.commit()
 
-            return jsonify({'message': "Comment added succesfully"}), 201
+            return jsonify({'message': "Comment added succesfully"}), 204
         else:
             return jsonify({'message': "Comment text can't be empty"}), 400
 
