@@ -61,9 +61,9 @@ def get_uesr_profile():
         'username': user.username,
         'points': user.points,
         'visited_bridges': user.visited_bridges,
-        'achievements': user.achevements
+        'achievements': user.achievements
     }
-    return jsonify(payload), 200
+    return jsonify(payload),200
 
 
 @main.route('/leaderboard')
