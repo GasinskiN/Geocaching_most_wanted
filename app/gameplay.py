@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, redirect, url_for, render_template
 from flask_login import login_required, current_user
 from . import db
-from .models import User, Bridge, user_bridge_association
+from .models import User, Bridge, user_bridge_association, Achievement
 from datetime import datetime
 from flasgger import swag_from
 
@@ -12,11 +12,11 @@ def verify_user_location(selected_bridge_name: str, user_latitude: float, user_l
     if bridge is None:
         return False
     
-    bridge_latitude = float(str(bridge.latitude)[:4])
-    bridge_longitude = float(str(bridge.longitude)[:4])
+    bridge_latitude = float(str(bridge.latitude)[:5])
+    bridge_longitude = float(str(bridge.longitude)[:5])
     
-    latitude_to_validate = float(str(user_latitude)[:4])
-    longitude_to_validate = float(str(user_longitude)[:4])
+    latitude_to_validate = float(str(user_latitude)[:5])
+    longitude_to_validate = float(str(user_longitude)[:5])
     
     return latitude_to_validate == bridge_latitude and longitude_to_validate == bridge_longitude
 
@@ -45,11 +45,17 @@ def update_user_bridges(user_id: int, bridge_name: str) -> None:
 def check_achievements(user_id: int) -> None:
     user = User.query.get(user_id)
     if user.points >= 9000:
-        user.achievements.append('Jest większe niż 9000')
+        achievement = Achievement.query.get(3)
+        if achievement not in user.achievements:
+            user.achievements.append(achievement)
     if user.points >= 300:
-        user.achievements.append('Teraz już tylko z górki')
+        achievement = Achievement.query.get(2)
+        if achievement not in user.achievements:
+            user.achievements.append(achievement)
     if user.points >= 100:
-        user.achievements.append('Pierwsze koty za płoty')
+        achievement = Achievement.query.get(1)
+        if achievement not in user.achievements:
+            user.achievements.append(achievement)
     db.session.commit()
 
 @gameplay_bp.route('/gameplay', methods=['GET'])
