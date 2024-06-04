@@ -26,7 +26,7 @@
     $.post("/api/profile/user", function (data) {
         $(".name_div").append("<h2>" + data.username + "</h2?")
         $(".points_div").append("<h1>" + data.points + "</h1>")
-        $("#line").css({"width": data.points/100 + "%", "height": "40px"})
+        $("#line").css({"width": data.points/10 + "%", "height": "40px"})
         // console.log(data)   
         for (const bridge of data.visited_bridges) {
 
