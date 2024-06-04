@@ -18,8 +18,34 @@ def display_profile():
 
 @main.route('/api/profile/user', methods=['POST'])
 @login_required
+@swag_from({
+    'tags': ['profile'],
+    'responses': {
+        200:
+        {
+            'description': 'Succesfully fetched data for user profile',
+            'content': {
+                'application/json': {}
+            }
+        }
+    },
+})
 def get_uesr_profile():
     user = User.query.filter_by(user_id=current_user.user_id).first()
+    bridges = []
+    achievements = []
+    for bridge in user.visited_bridges[:-3]:
+        data = {
+            'name': bridge.name,
+            'image_path': bridge.image_path,
+            'description': bridge.description
+        }
+        bridges.append(data)
+    for achievement in user.achievements:
+        data = {
+            'name': achievement.name
+        }
+        bridges.append(data)
     payload = {
         'username': user.username,
         'points': user.points,
@@ -33,6 +59,18 @@ def display_leaderboard():
     return render_template('leaderboard.html')
 
 @main.route('/api/leaderboard')
+@swag_from({
+    'tags': ['leaderboard'],
+    'responses': {
+        200:
+        {
+            'description': 'Succesfully fetched list of users sorted by rank',
+            'content': {
+                'application/json': {}
+            }
+        }
+    },
+})
 def get_users_sorte_by_points():
     users = User.query.order_by(User.points).all()
     rank = 1

@@ -64,4 +64,3 @@ class Achievement(db.Model):
     description = db.Column(db.String)
     
     users = db.relationship('User', secondary=user_achievement_association, back_populates='achievements')
-
