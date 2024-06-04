@@ -1,34 +1,53 @@
 {% include 'partials/header.html' %}
+<div class="container-sm text-center mt-5">
+    <h1>Gameplay</h1>
+    <div class="bg-secondary text-light card p-4 mt-3">
+        <form id="locationForm">
+            <label for="bridgeName">
+                <h2>Wybierz most, który chcesz zdobyć:</h2>
+            </label>
+            <div>
+                <select id="bridgeName" name="bridgeName" class="btn btn-lg btn-primary" required>
+                </select>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
 
-<h1>Gameplay</h1>
-<form id="locationForm">
-    <label for="bridgeName">Wybierz most, który chcesz zdobyć:</label>
-    <select id="bridgeName" name="bridgeName" required>
-        {% for bridge in bridges %}
-            <option value="{{ bridge.name }}">{{ bridge.name }}</option>
-        {% endfor %}
-    </select>
-    <input type="hidden" id="latitude" name="latitude">
-    <input type="hidden" id="longitude" name="longitude">
-    <button type="button" onclick="getLocation()">Znajdź moją lokalizację</button>
-    <button type="button" onclick="submitForm()">Prześlij</button>
-</form>
-
-<p id="locationOutput"></p>
-<p id="responseOutput"></p>
+                <button type="button" class=" btn btn-primary btn-lg" onclick="getLocation()">Znajdź moją
+                    lokalizację</button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="submitForm()">Prześlij</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container-sm ">
+    <div class="text-center bg-light mt-3">
+        <h4 id="locationOutput"></h4>
+        <h4 id="responseOutput"></h4>
+    </div>
+</div>
 
 <script>
+
+    // Pobiera wszystkie mosty z bazy danych aby było dostępne w pasku nawigacyjnym
+    $.post("/api/forum/bridges", function (data) {
+        for (const bridge of data) {
+            dropdown = $("<option>", { "value": bridge.name})
+            dropdown.text(bridge.name)
+            $("#bridgeName").append(dropdown)
+        }
+    });
+
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 document.getElementById('latitude').value = lat;
                 document.getElementById('longitude').value = lon;
                 document.getElementById('locationOutput').innerText = "Szerokość geograficzna: " + lat + ", Długość geograficzna: " + lon;
-            }, function(error) {
+            }, function (error) {
                 var errorMessage;
-                switch(error.code) {
+                switch (error.code) {
                     case error.PERMISSION_DENIED:
                         errorMessage = "Użytkownik odmówił zgody na geolokalizację.";
                         break;
@@ -53,7 +72,7 @@
         var bridgeName = document.getElementById('bridgeName').value;
         var latitude = document.getElementById('latitude').value;
         var longitude = document.getElementById('longitude').value;
-        
+
         fetch('/api/gameplay', {
             method: 'POST',
             headers: {
@@ -65,18 +84,18 @@
                 longitude: parseFloat(longitude)
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                document.getElementById('responseOutput').innerText = "Most zdobyty!";
-                window.location.href = '/profile'; // Redirect to profile page
-            } else {
-                document.getElementById('responseOutput').innerText = data.error;
-            }
-        })
-        .catch(error => {
-            document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('responseOutput').innerText = "Most zdobyty!";
+                    window.location.href = '/profile';
+                } else {
+                    document.getElementById('responseOutput').innerText = data.error;
+                }
+            })
+            .catch(error => {
+                document.getElementById('responseOutput').innerText = "Wystąpił błąd: " + error;
+            });
     }
 </script>
 
