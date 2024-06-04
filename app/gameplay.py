@@ -69,7 +69,6 @@ def check_achievements(user_id: int) -> None:
 @gameplay_bp.route('/gameplay', methods=['GET'])
 @login_required
 def gameplay_page():
-    bridges = Bridge.query.all()
     return render_template('gameplay_page.html')
 
 @gameplay_bp.route('/api/gameplay', methods=['POST'])

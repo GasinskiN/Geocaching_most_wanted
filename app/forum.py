@@ -1,4 +1,3 @@
-#Autor Krzysztof Orlikowski
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import current_user, login_required
 from .models import db, Comment, Bridge, User
@@ -160,7 +159,7 @@ def add_comment(bridgeid):
     if request.method == 'POST':
         comment_text = request.form.get('text')
         user = User.query.filter_by(user_id=current_user.user_id).first()
-        #sprawdzenie czy urzytkownik odwiedził most
+        #sprawdzenie czy użytkownik odwiedził most
         if any(bridge.bridge_id == bridgeid for bridge in user.visited_bridges):
             if comment_text:
                 new_comment = Comment(

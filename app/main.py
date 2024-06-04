@@ -38,7 +38,8 @@ def get_user_profile():
         data = {
             'name': bridge.name,
             'image_path': bridge.image_path,
-            'description': bridge.description
+            'description': bridge.description,
+            'bridgeid': bridge.bridge_id
         }
         bridges.append(data)
     for achievement in user.achievements:
