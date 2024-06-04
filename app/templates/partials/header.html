@@ -47,6 +47,7 @@
 
               </ul>
               <script>
+                // Pobiera wszystkie mosty z bazy danych aby było dostępne w pasku nawigacyjnym
                 $.post("/api/forum/bridges", function(data){
                   for(const bridge of data){
                     console.log(bridge)

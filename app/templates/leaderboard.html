@@ -25,6 +25,7 @@
 </div>
 
 <script>
+    // pobiera wszystkich użytkownikót z bazy danych oraz wypisuje ich na leaderboard
     $.get("/api/leaderboard", function (data) {
         for (const element of data) {
 

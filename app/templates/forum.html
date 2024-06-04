@@ -6,7 +6,7 @@
 
 
     <script>
-
+        // pobiera wszystkie komentarze z bazy danych dla strony mostu oraz wyświetla je 
         function fetchComments(){
             $.post("/api/forum/getcomments/{{bridgeid}}", function (data) {
                 $(".commentBody").empty();
@@ -21,14 +21,20 @@
                     }
                 });
         }
+        // wywołanie pobierania komentarzy
         fetchComments();
+        // pobiera src zdjęcia aktualnego mostu i go wyświetla
         $.post("/api/forum/bridge/{{bridgeid}}", function(data){
             image = $("<img>", {"src": data.image_path, "class": "img-fluid"})
             $(".bridge_image").append(image)
         });
+        // Jak form zostanie przesłany wysyła jego dane na endpoint api
+        // w którym są przekazwyane do bazy danych jeśli post odbędzie się
+        // poprawnie wykonuje fetchComments aby odświeżyć komentarze bez 
+        // odświeżania całej strony
         $(document).ready(function() {
             $('#target').on('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission
+                event.preventDefault();
 
                 $.ajax({
                     url: '/api/forum/addcomment/{{bridgeid}}',

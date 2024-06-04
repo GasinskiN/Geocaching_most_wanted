@@ -23,14 +23,16 @@
     </div>
 </div>
 <script>
+    // Pobiera dane użytkownika takie jak punkty oraz odblokowane mosty i achievementy. Oraz wyświetla je 
+    // w przejrzysty sposób
     $.post("/api/profile/user", function (data) {
         $(".name_div").append("<h2>" + data.username + "</h2?")
         $(".points_div").append("<h1>" + data.points + "</h1>")
         $("#line").css({"width": data.points/10 + "%", "height": "40px"})
-        // console.log(data)   
+
         for (const bridge of data.visited_bridges) {
 
-            const $unlocked_bridge = $([
+            $unlocked_bridge = $([
                 '<div class="col">',
                     '<div class="card mt-3">',
                         '<img src="' + bridge.image_path + '" class="card-img-top" alt="...">',
@@ -42,6 +44,7 @@
                     '</div>',
                 '</div>'
             ].join(''));
+
             $(".visited_bridges").append($unlocked_bridge)
         }
         for (const achievement of data.achievements){
@@ -56,6 +59,7 @@
                     '</div>',
                 '</div>'
             ].join(''));
+
             $('#achievements-container').append($unlocked_achievement);
         }
 
