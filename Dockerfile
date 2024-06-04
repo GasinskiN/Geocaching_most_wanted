@@ -1,20 +1,19 @@
-# Użyj oficjalnego obrazu Python jako bazowego
 FROM python:3.9-slim
 
-# Ustaw zmienną środowiskową, aby `python` i `pip` nie używały bufora
+# Ustawienie zmiennej środowiskowowej, aby `python` i `pip` nie używały bufora
 ENV PYTHONUNBUFFERED=1
 
-# Utwórz katalog dla aplikacji
+# Utwórzenie katalogu dla aplikacji
 RUN mkdir /app
 WORKDIR /app
 
-# Skopiuj plik requirements.txt do katalogu roboczego
+# Kopiowanie pliku requirements.txt do katalogu /app/
 COPY requirements.txt /app/
 
-# Zainstaluj zależności
+# Instalacja zależności
 RUN pip install -r requirements.txt
 
-# Skopiuj zawartość katalogu lokalnego do obrazu
+# Kopiowanie zawartości katalogu lokalnego do obrazu
 COPY . /app/
 
 # Otwarcie portu 5000 dla aplikacji Flask

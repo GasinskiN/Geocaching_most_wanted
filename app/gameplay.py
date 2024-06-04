@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, redirect, url_for, render_template
+from flask import Blueprint, jsonify, request, render_template
 from flask_login import login_required, current_user
 from . import db
 from .models import User, Bridge, user_bridge_association, Achievement
@@ -70,7 +70,7 @@ def check_achievements(user_id: int) -> None:
 @login_required
 def gameplay_page():
     bridges = Bridge.query.all()
-    return render_template('gameplay_page.html', bridges=bridges)
+    return render_template('gameplay_page.html')
 
 @gameplay_bp.route('/api/gameplay', methods=['POST'])
 @login_required
