@@ -30,7 +30,7 @@ def display_profile():
         }
     },
 })
-def get_uesr_profile():
+def get_user_profile():
     user = User.query.filter_by(user_id=current_user.user_id).first()
     bridges = []
     achievements = []
@@ -45,12 +45,12 @@ def get_uesr_profile():
         data = {
             'name': achievement.name
         }
-        bridges.append(data)
+        achievements.append(data)
     payload = {
         'username': user.username,
         'points': user.points,
-        'visited_bridges': user.visited_bridges,
-        'achievements': user.achievements
+        'visited_bridges': bridges,
+        'achievements': achievements
     }
     return jsonify(payload),200
 
