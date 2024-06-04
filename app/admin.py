@@ -87,25 +87,6 @@ def add_bridge():
 @admin_bp.route('/api/delete_bridge', methods=['GET'])
 @login_required
 @admin_required
-@swag_from({
-    'tags': ['Admin'],
-    'responses': {
-        200: {
-            'description': 'Form to delete a bridge',
-            'content': {
-                'text/html': {
-                    'example': '<html>Delete Bridge Form</html>'
-                }
-            }
-        },
-        401: {
-            'description': 'Unauthorized'
-        },
-        403: {
-            'description': 'Forbidden'
-        }
-    }
-})
 def show_delete_bridge_form():
     return render_template('delete_bridge.html')
 
@@ -167,31 +148,12 @@ def delete_bridge(bridge_id):
 @admin_bp.route('/api/delete_achievement', methods=['GET'])
 @login_required
 @admin_required
-@swag_from({
-    'tags': ['Admin'],
-    'responses': {
-        200: {
-            'description': 'Form to delete an achievement',
-            'content': {
-                'text/html': {
-                    'example': '<html>Delete Achievement Form</html>'
-                }
-            }
-        },
-        401: {
-            'description': 'Unauthorized'
-        },
-        403: {
-            'description': 'Forbidden'
-        }
-    }
-})
 def show_delete_achievement_form():
     achievements = Achievement.query.all()
     return render_template('delete_achievement.html', achievements=achievements)
 
 # Obsługa żądania usunięcia osiągnięcia
-@admin_bp.route('/api/delete_achievement', methods=['POST'])
+@admin_bp.route('/api/delete_achievement', methods=['DELETE'])
 @login_required
 @admin_required
 @swag_from({
@@ -249,25 +211,6 @@ def delete_achievement():
 @admin_bp.route('/api/add_achievement', methods=['GET'])
 @login_required
 @admin_required
-@swag_from({
-    'tags': ['Admin'],
-    'responses': {
-        200: {
-            'description': 'Form to add an achievement',
-            'content': {
-                'text/html': {
-                    'example': '<html>Add Achievement Form</html>'
-                }
-            }
-        },
-        401: {
-            'description': 'Unauthorized'
-        },
-        403: {
-            'description': 'Forbidden'
-        }
-    }
-})
 def show_add_achievement_form():
     return render_template('add_achievement.html')
 
