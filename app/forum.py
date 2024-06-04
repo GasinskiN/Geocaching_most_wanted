@@ -130,6 +130,13 @@ def get_comments(bridgeid):
             'content': {
                 'application/json': {}
             }
+        },
+        403:
+        {
+            'description': 'You have not visited this bridge you can\'t comment on it',
+            'content': {
+                'application/json': {}
+            }
         }
     },
     'parameters': [
@@ -153,6 +160,7 @@ def add_comment(bridgeid):
     if request.method == 'POST':
         comment_text = request.form.get('text')
         user = User.query.filter_by(user_id=current_user.user_id).first()
+        #sprawdzenie czy urzytkownik odwiedził most
         if any(bridge.bridge_id == bridgeid for bridge in user.visited_bridges):
             if comment_text:
                 new_comment = Comment(
