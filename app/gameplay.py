@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, redirect, url_for, render_template
+from flask import Blueprint, jsonify, request, render_template
 from flask_login import login_required, current_user
 from . import db
 from .models import User, Bridge, user_bridge_association, Achievement

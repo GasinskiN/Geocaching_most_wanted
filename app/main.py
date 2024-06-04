@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import current_user, login_required
-from .models import db, Comment, Bridge, User
+from .models import User
 from flasgger import swag_from
 
 main = Blueprint('main', __name__)
