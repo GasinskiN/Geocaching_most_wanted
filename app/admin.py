@@ -58,6 +58,8 @@ def show_add_bridge_form():
     }
 })
 def add_bridge():
+    """Endpoint dla admina służący do dodawania nowego mostu do bazy danych"""
+    
     data = request.get_json()
 
     name = data.get('name')
@@ -149,6 +151,8 @@ def show_delete_bridge_form():
     }
 })
 def delete_bridge(bridge_id):
+    """Endpoint dla admina służący do usuwania mostu z bazy danych"""
+    
     bridge = Bridge.query.get(bridge_id)
     if bridge is None:
         return jsonify({'error': 'Bridge not found'}), 404
@@ -228,6 +232,8 @@ def show_delete_achievement_form():
     }
 })
 def delete_achievement():
+    """Endpoint dla admina służący do usuwania osiągnięcia z bazy danych"""
+    
     data = request.get_json()
     achievement_id = data.get('achievement_id')
 
@@ -308,6 +314,8 @@ def show_add_achievement_form():
     }
 })
 def add_achievement():
+    """Endpoint dla admina służący do dodawania nowego osiągnięcia do bazy danych"""
+    
     data = request.get_json()
     name = data.get('name')
     description = data.get('description')

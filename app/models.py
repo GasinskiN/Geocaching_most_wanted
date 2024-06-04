@@ -1,3 +1,4 @@
+#Autor Krzysztof Orlikowski
 from . import db
 from flask_login import UserMixin
 from datetime import datetime
@@ -20,18 +21,14 @@ user_achievement_association = db.Table(
 # Mapowanie tabel bazy danych na objekty python wyokrzystując SQLAlchemy
 
 # UserMixin pozwala na zapamiętywanie użytkowniknika w bazie na podstawie cookies sesji
-# Ustalilem 10000 jako maks punktów bo z tego liczę pasek skończenia jakby co
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     points = db.Column(db.Integer, default=0)
-
-    # potrzebne do doadania admina
     role = db.Column(db.String(50), nullable=False, default='user')
-
-    #visited_bridges = db.relationship('Bridge', secondary=user_bridge_association, back_populates='users')
+    
     visited_bridges = db.relationship('Bridge', secondary=user_bridge_association, back_populates='users', order_by=user_bridge_association.c.timestamp)
     comments = db.relationship('Comment', back_populates='user')
     achievements = db.relationship('Achievement', secondary=user_achievement_association, back_populates='users')
@@ -67,4 +64,3 @@ class Achievement(db.Model):
     description = db.Column(db.String)
     
     users = db.relationship('User', secondary=user_achievement_association, back_populates='achievements')
-

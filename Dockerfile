@@ -1,17 +1,24 @@
-# Użyj obrazu bazowego Pythona
-FROM python:3.9
+# Użyj oficjalnego obrazu Python jako bazowego
+FROM python:3.9-slim
 
-# Ustaw katalog roboczy
+# Ustaw zmienną środowiskową, aby `python` i `pip` nie używały bufora
+ENV PYTHONUNBUFFERED=1
+
+# Utwórz katalog dla aplikacji
+RUN mkdir /app
 WORKDIR /app
 
-# Skopiuj pliki aplikacji do kontenera
-COPY . .
+# Skopiuj plik requirements.txt do katalogu roboczego
+COPY requirements.txt /app/
 
 # Zainstaluj zależności
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Otwórz port 5000, na którym będzie działać aplikacja Flask
+# Skopiuj zawartość katalogu lokalnego do obrazu
+COPY . /app/
+
+# Otwarcie portu 5000 dla aplikacji Flask
 EXPOSE 5000
 
-# Uruchom aplikację Flask
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Polecenie do uruchomienia aplikacji za pomocą Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
