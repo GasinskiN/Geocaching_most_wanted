@@ -34,7 +34,7 @@ def get_user_profile():
     user = User.query.filter_by(user_id=current_user.user_id).first()
     bridges = []
     achievements = []
-    for bridge in user.visited_bridges[:-3]:
+    for bridge in user.visited_bridges[-3:]:
         data = {
             'name': bridge.name,
             'image_path': bridge.image_path,
