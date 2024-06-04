@@ -15,11 +15,11 @@ def verify_user_location(selected_bridge_name: str, user_latitude: float, user_l
     if bridge is None:
         return False
     
-    bridge_latitude = float(str(bridge.latitude)[:5])
-    bridge_longitude = float(str(bridge.longitude)[:5])
+    bridge_latitude = float(str(bridge.latitude)[:4])
+    bridge_longitude = float(str(bridge.longitude)[:4])
     
-    latitude_to_validate = float(str(user_latitude)[:5])
-    longitude_to_validate = float(str(user_longitude)[:5])
+    latitude_to_validate = float(str(user_latitude)[:4])
+    longitude_to_validate = float(str(user_longitude)[:4])
     
     return latitude_to_validate == bridge_latitude and longitude_to_validate == bridge_longitude
 
