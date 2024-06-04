@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "mostwanted_db",
+            "database": "${workspaceFolder:Geocaching_most_wanted}/instance/mostwanted.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
