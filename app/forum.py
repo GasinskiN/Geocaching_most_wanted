@@ -130,6 +130,13 @@ def get_comments(bridgeid):
             'content': {
                 'application/json': {}
             }
+        },
+        403:
+        {
+            'description': 'You have not visited this bridge you can\'t comment on it',
+            'content': {
+                'application/json': {}
+            }
         }
     },
     'parameters': [
@@ -152,16 +159,20 @@ def get_comments(bridgeid):
 def add_comment(bridgeid):
     if request.method == 'POST':
         comment_text = request.form.get('text')
-        print(comment_text)
-        if comment_text:
-            new_comment = Comment(
-                user_id=current_user.user_id,
-                bridge_id=bridgeid,
-                text=comment_text
-            )
-            db.session.add(new_comment)
-            db.session.commit()
+        user = User.query.filter_by(user_id=current_user.user_id).first()
+        #sprawdzenie czy urzytkownik odwiedził most
+        if any(bridge.bridge_id == bridgeid for bridge in user.visited_bridges):
+            if comment_text:
+                new_comment = Comment(
+                    user_id=current_user.user_id,
+                    bridge_id=bridgeid,
+                    text=comment_text
+                )
+                db.session.add(new_comment)
+                db.session.commit()
 
-            return jsonify({'message': "Comment added succesfully"}), 201
+                return jsonify({'message': "Comment added succesfully"}), 201
+            else:
+                return jsonify({'message': "Comment text can't be empty"}), 400
         else:
-            return jsonify({'message': "Comment text can't be empty"}), 400
+            return jsonify({'message': "You have not visited this bridge you can't comment on it"}), 403
