@@ -2,7 +2,7 @@
 <div class="container-sm mt-5 rounded-5">
     <div class="row bg-secondary rounded-3">
         <div class="col-5 mt-1 mb-1">
-            <img src="{{profile}}" style="border-radius: 50%;">
+            <img src="../static/public/Profile_img.jpg" style="border-radius: 50%;">
         </div>
         <div class="col-7 pt-5 text-white name_div">
         </div>
@@ -27,7 +27,7 @@
         $(".name_div").append("<h2>" + data.username + "</h2?")
         $(".points_div").append("<h1>" + data.points + "</h1>")
         $("#line").css({"width": data.points/100 + "%", "height": "40px"})
-        console.log(data)   
+        // console.log(data)   
         for (const bridge of data.visited_bridges) {
 
             const $unlocked_bridge = $([
@@ -41,12 +41,12 @@
                             '</div>',
                     '</div>',
                 '</div>'
-            ])
-            $(".visited_bridges").append($unlocked_bridge);   
+            ].join(''));
+            $(".visited_bridges").append($unlocked_bridge)
         }
         for (const achievement of data.achievements){
                         
-            const $unlocked_achievement = $([
+            $unlocked_achievement = $([
                 '<div class="row">',
                     '<div class="col-3 mt-2">',
                         '<img src="../static/public/koty_za_ploty.png" style="height: 100px;">',
@@ -55,8 +55,8 @@
                         '<h2>' + achievement.name + '</h2>',
                     '</div>',
                 '</div>'
-            ])
-            $(".achievements").append($unlocked_achievement)
+            ].join(''));
+            $('#achievements-container').append($unlocked_achievement);
         }
 
     });
@@ -65,11 +65,11 @@
     <div class="text-center bg-dark text-white mt-5 rounded-3 pt-2 pb-1">
         <h3>Niedawno odblokowane mosty</h3>
     </div>
-    <div class="row visited_bridges">
+    <div class="row visited_bridges" id="bridges1">
     </div>
 </div>
 <div class="container-sm mt-5 text-white bg-dark card align-middle" style="height: 120px;">
-    <div class="row achievements">
+    <div class="row achievements" id="achievements-container">
     </div>
 </div>
 {% include 'partials/footer.html' %}
