@@ -73,6 +73,7 @@ def display_leaderboard():
 })
 def get_users_sorte_by_points():
     users = User.query.order_by(User.points).all()
+    users.reverse()
     rank = 1
     payload= []
     for user in users:
