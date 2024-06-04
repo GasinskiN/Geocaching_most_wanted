@@ -12,11 +12,11 @@ def verify_user_location(selected_bridge_name: str, user_latitude: float, user_l
     if bridge is None:
         return False
     
-    bridge_latitude = float(str(bridge.latitude)[:6])
-    bridge_longitude = float(str(bridge.longitude)[:6])
+    bridge_latitude = float(str(bridge.latitude)[:4])
+    bridge_longitude = float(str(bridge.longitude)[:4])
     
-    latitude_to_validate = float(str(user_latitude)[:6])
-    longitude_to_validate = float(str(user_longitude)[:6])
+    latitude_to_validate = float(str(user_latitude)[:4])
+    longitude_to_validate = float(str(user_longitude)[:4])
     
     return latitude_to_validate == bridge_latitude and longitude_to_validate == bridge_longitude
 
@@ -37,7 +37,19 @@ def update_user_bridges(user_id: int, bridge_name: str) -> None:
         timestamp=datetime.utcnow()
     )
     db.session.execute(stmt)
+    
     user.points += 100
+    db.session.commit()
+    
+    
+def check_achievements(user_id: int) -> None:
+    user = User.query.get(user_id)
+    if user.points >= 9000:
+        user.achievements.append('Jest większe niż 9000')
+    if user.points >= 300:
+        user.achievements.append('Teraz już tylko z górki')
+    if user.points >= 100:
+        user.achievements.append('Pierwsze koty za płoty')
     db.session.commit()
 
 @gameplay_bp.route('/gameplay', methods=['GET'])
@@ -107,6 +119,7 @@ def gameplay_api():
     
     if verify_user_location(bridge_name, float(latitude), float(longitude)):
         update_user_bridges(current_user.get_id(), bridge_name)
+        check_achievements(current_user.get_id())
         return jsonify({'status': 'success'}), 200
     
     return jsonify({'error': 'Location mismatch'}), 400
